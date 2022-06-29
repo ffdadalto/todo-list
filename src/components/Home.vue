@@ -76,4 +76,8 @@ onMounted(() => {
   background: -webkit-linear-gradient(to right, #eef2f3, #8e9eab);
   background: linear-gradient(to right, #eef2f3, #8e9eab);
 }
+
+.div-titulo {
+  color: #626d76;
+}
 </style>
