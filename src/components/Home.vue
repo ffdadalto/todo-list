@@ -1,6 +1,11 @@
 <script setup>
+import { ref, reactive, onMounted } from 'vue';
+import axios from 'axios';
+import Item from './Item.vue';
 
-import { ref, reactive } from 'vue';
+const api = axios.create({
+  baseURL: 'https://todo-list-32a08-default-rtdb.firebaseio.com/'
+});
 
 defineProps({
   msg: {
@@ -9,39 +14,76 @@ defineProps({
   }
 })
 
-let novoItem = reactive({ id: '', descricao: '' });
-const itens = ref([
-  { id: 1, descricao: 'Primeiro Item' },
-  { id: 2, descricao: 'Segundo Item' },
-]);
+let novoItem = ref('');
+let lista = ref([]);
 
 const AddItem = () => {
-  itens.value.push({ id: itens.value.length + 1, descricao: novoItem.descricao });
-  novoItem.id = '';
-  novoItem.descricao = '';
+  if (novoItem.value != '') {
+    //Monta o objeto e adiciona o novo item no array
+    lista.value.push({
+      id: lista.value.length + 1,
+      nome: novoItem.value,
+      marcado: false
+    });
+
+    // Salva no Firebase
+    api.put('data.json', lista.value);
+
+    novoItem.value = '';
+  }
 }
+
+onMounted(() => {
+  // Carrega dados do Firebase
+  api.get('data.json').then(resp => {
+    const data = resp.data;
+    if (data) {      
+      lista.value = data;
+    }
+  })
+})
 
 
 </script>
 
 <template>
   <div class="d-flex justify-content-center align-items-center w-100 vh-100 bg-light">
-    <div class="py-2 px-5 w-50 h-75 bg-white shadow-lg rounded-1">
+    <div class="overflow-auto py-2 px-5 w-50 h-75 bg-white shadow-lg rounded-1">
       <div class="div-titulo">
-        <h1 class="display-1 mb-5 text-center text-uppercase">To Do List</h1>
+        <h1 class="display-1 mb-5 text-center text-uppercase fw-bold">{{ msg }}</h1>
       </div>
-      <div class="todo mb-5" >
-        <InputText type="text" @keyup.enter="AddItem()" v-model.trim="novoItem.descricao" class="p-inputtext-lg input w-100"
-          placeholder="Insira um item e pressione enter para confirmar" />
+      <div class="row mb-5">
+        <div class="col-xs-12 col-md-10">
+          <InputText type="text" @keyup.enter="AddItem()" v-model.trim="novoItem"
+            class="p-inputtext-lg input me-2 w-100" style="height: 60px;"
+            placeholder="Insira um item e pressione enter para confirmar" />
+        </div>
+        <div class="col-xs-12 col-md-2"><Button @click="AddItem()" icon="pi pi-check" style="height: 60px; width: 60px;"
+            class="p-button-raised p-button-secondary" />
+        </div>
+
       </div>
-      <div class="div-itens">
-        <ul>
-          <li v-for="(item, i) in itens" :key="item.id">{{ item.descricao }}</li>
-        </ul>
+      <div class="div-lista">
+
+        <Item :itens="lista"></Item>
+
       </div>
     </div>
   </div>
 </template>
 
-<style scoped>
+<style>
+.custom .p-scrollpanel-wrapper {
+  border-right: 9px solid #f4f4f4;
+}
+
+.custom .p-scrollpanel-bar {
+  background-color: #1976d2;
+  opacity: 1;
+  transition: background-color .3s;
+}
+
+.custom .p-scrollpanel-bar:hover {
+  background-color: #3b4c54;
+}
 </style>
