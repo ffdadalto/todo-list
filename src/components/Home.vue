@@ -37,7 +37,7 @@ onMounted(() => {
   // Carrega dados do Firebase
   api.get('data.json').then(resp => {
     const data = resp.data;
-    if (data) {      
+    if (data) {
       lista.value = data;
     }
   })
@@ -47,7 +47,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="d-flex justify-content-center align-items-center w-100 vh-100 bg-light">
+  <div class="body d-flex justify-content-center align-items-center w-100 vh-100">
     <div class="overflow-auto py-2 px-5 w-50 h-75 bg-white shadow-lg rounded-1">
       <div class="div-titulo">
         <h1 class="display-1 mb-5 text-center text-uppercase fw-bold">{{ msg }}</h1>
@@ -64,26 +64,16 @@ onMounted(() => {
 
       </div>
       <div class="div-lista">
-
         <Item :itens="lista"></Item>
-
       </div>
     </div>
   </div>
 </template>
 
-<style>
-.custom .p-scrollpanel-wrapper {
-  border-right: 9px solid #f4f4f4;
-}
-
-.custom .p-scrollpanel-bar {
-  background-color: #1976d2;
-  opacity: 1;
-  transition: background-color .3s;
-}
-
-.custom .p-scrollpanel-bar:hover {
-  background-color: #3b4c54;
+<style scoped>
+.body {
+  background: #8e9eab;
+  background: -webkit-linear-gradient(to right, #eef2f3, #8e9eab);
+  background: linear-gradient(to right, #eef2f3, #8e9eab);
 }
 </style>
