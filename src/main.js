@@ -5,6 +5,9 @@ import PrimeVue from 'primevue/config';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 import ScrollPanel from 'primevue/scrollpanel';
+import ProgressBar from 'primevue/progressbar';
+
+
 
 
 import 'primevue/resources/themes/saga-blue/theme.css'       //theme
@@ -20,7 +23,7 @@ app.use(PrimeVue);
 app.component('Button', Button);
 app.component('InputText', InputText);
 app.component('ScrollPanel', ScrollPanel);
-
+app.component('ProgressBar', ProgressBar);
 
 app.mount('#app')
 
