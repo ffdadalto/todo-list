@@ -43,7 +43,9 @@ const excluirItem = (obj, itens) => {
 <template>
     <div v-for="item in itens" class="item d-flex justify-content-between align-items-center px-5 py-2 mb-2 rounded-1">
         <div :class="item.marcado ? 'marcado' : ''" class="item-descricao m-0 text-start fs-2 text-wrap"
-            @click="marcarItem(item, itens)">{{ item.nome }}</div>
+            @click="marcarItem(item, itens)">
+            {{ item.nome }}
+        </div>
         <div>
             <i class="fas fa-trash fs-3 icone-trash" @click="excluirItem(item, itens)"></i>
         </div>
@@ -80,5 +82,11 @@ const excluirItem = (obj, itens) => {
 .marcado {
     text-decoration: line-through;
     opacity: 50%;
+}
+
+.circulo {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
 }
 </style>
